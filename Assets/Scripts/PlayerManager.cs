@@ -6,6 +6,8 @@ public class PlayerManager : MonoBehaviour
     
     // Other objects references
     [SerializeField] private Transform canvas;
+    [SerializeField] private GameObject bulletPrefab;
+    private Transform _shootPos;
     
     // Player Stats (not changeable)
     private float _moveSpeed = 50f;
@@ -21,44 +23,54 @@ public class PlayerManager : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _staminaBar = canvas.Find("Stamina").Find("Bar").GetComponent<RectTransform>();
+        _shootPos = transform.Find("Gun").Find("ShootPos");
 
         _stamina = _staminaMax;
     }
 
-    private float _holdingShiftTime = 0;
+    private Vector2 _lookingDirection = Vector2.right;
     void Update()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
-        if (horizontalInput != 0) transform.rotation = horizontalInput > 0 ? Quaternion.Euler(0, 180f, 0f) : Quaternion.identity;
+        if (horizontalInput != 0) transform.rotation = horizontalInput > 0 ? Quaternion.identity : Quaternion.Euler(0, 180f, 0f);
         float verticalInput = Input.GetAxisRaw("Vertical");
+        // Only update looking direction when player is actually moving
+        if (horizontalInput != 0 || verticalInput != 0)
+        {
+            // update direction the player is facing for shooting.
+            if (horizontalInput > 0 && horizontalInput > verticalInput) _lookingDirection = Vector2.right;
+            if (horizontalInput < 0 && horizontalInput < verticalInput) _lookingDirection = Vector2.left;
+            if (verticalInput > 0 && verticalInput > horizontalInput) _lookingDirection = Vector2.up;
+            if (verticalInput < 0 && verticalInput < horizontalInput) _lookingDirection = Vector2.down;
+        }
         float speedMult = Input.GetKey(KeyCode.LeftShift) && _stamina > 0 ? _runningMultiplier : 1f;
         if (Input.GetKey(KeyCode.LeftShift) && _stamina > 0)
         {
-            _holdingShiftTime += Time.deltaTime;
-            if (_holdingShiftTime >= 1f)
-            {
-                _holdingShiftTime = 0f;
-                ReduceStamina();
-            }
-        }
-
-        if (Input.GetKeyUp(KeyCode.LeftShift) && _holdingShiftTime > 0f)
-        {
-            ReduceStamina();
-            _holdingShiftTime = 0f;
+            _stamina -= Time.deltaTime;
+            UpdateStaminaBar();
         }
         _rb.linearVelocity = new Vector2((horizontalInput * _moveSpeed) * speedMult, (verticalInput * _moveSpeed) * speedMult);
+        
+        if (Input.GetMouseButtonDown(0)) ShootGun();
     }
 
-    private void ReduceStamina()
+    private void ShootGun()
     {
-        _stamina -= 1;
-        UpdateStaminaBar();
+        GameObject spawnedBullet = Instantiate(bulletPrefab, _shootPos.position, Quaternion.identity);
+        if (spawnedBullet.TryGetComponent(out BulletManager bulletManager))
+        {
+            bulletManager.SetDirection(_lookingDirection);
+        }
     }
     
     private void UpdateStaminaBar()
     {
         _staminaBar.localScale = new Vector3((_stamina / _staminaMax), 1f, 1f);
     }
-    
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!other.gameObject.CompareTag("Bullet")) return;
+        Destroy(other.gameObject);
+    }
 }
