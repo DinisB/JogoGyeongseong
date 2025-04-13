@@ -11,6 +11,7 @@ public class PlayerManager : MonoBehaviour
     private Transform _shootPos;
     
     // Player Stats (not changeable)
+    private float _timeBeforeStaminaRegen = 2f;
     private float _moveSpeed = 50f;
     private float _runningMultiplier = 2.5f;
 
@@ -98,7 +99,7 @@ public class PlayerManager : MonoBehaviour
     private Coroutine _RegenCoroutine;
     private IEnumerator RegenStamina()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(_timeBeforeStaminaRegen);
         _staminaRegen = true;
     }
 }
