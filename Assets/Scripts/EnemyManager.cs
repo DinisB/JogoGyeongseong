@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -5,6 +6,7 @@ public class EnemyManager : MonoBehaviour
 {
 
     [SerializeField] private GameObject bulletPrefab;
+    // WE NEED TO UPDATE LATER SHOOT POS FOR DOWN AND UP DEPENDING ON THE SPRITES USED, NEED OFFSET FOR IT.
     [SerializeField] private Transform shootPos;
     [SerializeField] private Transform pathObject;
 
@@ -12,6 +14,7 @@ public class EnemyManager : MonoBehaviour
     
     private Rigidbody2D _rb;
     
+    // WILL BE USED IN FUTURE
     // 0 = Nothing found, walk
     // 1 = In combat with player, dont walk
     private int _state = 0;
@@ -90,5 +93,12 @@ public class EnemyManager : MonoBehaviour
             yield return new WaitForSeconds(0.05f);
         }
 
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!other.gameObject.CompareTag("Bullet")) return;
+        Destroy(other.gameObject);
+        Destroy(gameObject);
     }
 }

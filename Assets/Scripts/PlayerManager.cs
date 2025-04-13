@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
@@ -10,10 +11,12 @@ public class PlayerManager : MonoBehaviour
     private Transform _shootPos;
     
     // Player Stats (not changeable)
+    private float _timeBeforeStaminaRegen = 2f;
     private float _moveSpeed = 50f;
     private float _runningMultiplier = 2.5f;
 
     // Player Stats affected by player actions.
+    private bool _staminaRegen = false;
     private float _stamina = 10, _staminaMax = 10;
         
     private Rigidbody2D _rb;
@@ -46,12 +49,29 @@ public class PlayerManager : MonoBehaviour
         float speedMult = Input.GetKey(KeyCode.LeftShift) && _stamina > 0 ? _runningMultiplier : 1f;
         if (Input.GetKey(KeyCode.LeftShift) && _stamina > 0)
         {
+            if (_RegenCoroutine != null)
+            {
+                StopCoroutine(_RegenCoroutine);
+                _staminaRegen = false;
+            }
             _stamina -= Time.deltaTime;
             UpdateStaminaBar();
         }
         _rb.linearVelocity = new Vector2((horizontalInput * _moveSpeed) * speedMult, (verticalInput * _moveSpeed) * speedMult);
         
         if (Input.GetMouseButtonDown(0)) ShootGun();
+
+        if (_staminaRegen && _stamina < 10)
+        {
+            _stamina += Time.deltaTime * 2;
+            UpdateStaminaBar();
+        }
+        
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            if (_RegenCoroutine != null) StopCoroutine(_RegenCoroutine);
+            _RegenCoroutine = StartCoroutine(RegenStamina());
+        }
     }
 
     private void ShootGun()
@@ -65,6 +85,8 @@ public class PlayerManager : MonoBehaviour
     
     private void UpdateStaminaBar()
     {
+        if (_stamina < 0) _stamina = 0;
+        if (_stamina > 10) _stamina = 10;
         _staminaBar.localScale = new Vector3((_stamina / _staminaMax), 1f, 1f);
     }
 
@@ -72,5 +94,12 @@ public class PlayerManager : MonoBehaviour
     {
         if (!other.gameObject.CompareTag("Bullet")) return;
         Destroy(other.gameObject);
+    }
+
+    private Coroutine _RegenCoroutine;
+    private IEnumerator RegenStamina()
+    {
+        yield return new WaitForSeconds(_timeBeforeStaminaRegen);
+        _staminaRegen = true;
     }
 }
