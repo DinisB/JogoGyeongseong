@@ -12,16 +12,12 @@ public class GameManager : MonoBehaviour
     
     void Start()
     {
-        
-    }
-
-    void Update()
-    {
-        
+        // Disappear inventory on start
+        PopInventory(true);
     }
 
     private Coroutine _disappearInventory;
-    public void PopInventory()
+    public void PopInventory(bool firstTime = false)
     {
         if (_disappearInventory != null) StopCoroutine(_disappearInventory);
         if (!canvas.Find("Inventory").TryGetComponent(out CanvasGroup canvasGroup))
@@ -30,11 +26,31 @@ public class GameManager : MonoBehaviour
             Debug.Log("Couldn't find CanvasGroup on Inventory[Canvas child], creating one...");
             canvasGroup = canvas.Find("Inventory").gameObject.AddComponent<CanvasGroup>();
         }
-        _disappearInventory = StartCoroutine(DisappearingInventory(canvasGroup));
+        _disappearInventory = StartCoroutine(DisappearingInventory(canvasGroup, firstTime));
     }
 
-    private IEnumerator DisappearingInventory(CanvasGroup canvasGroup)
+    /// <summary>
+    /// Called to ensure the items displayed on the inventory are correct.
+    /// </summary>
+    private void UpdateInventoryItems()
     {
+        
+    }
+    
+    /// <summary>
+    /// Coroutine that will make the inventory appear and disappear after the time set on the script.
+    /// </summary>
+    /// <param name="canvasGroup"></param>
+    /// <param name="firstTime"></param>
+    /// <returns></returns>
+    private IEnumerator DisappearingInventory(CanvasGroup canvasGroup, bool firstTime = false)
+    {
+        if (firstTime)
+        {
+            canvasGroup.alpha = 0f;
+            yield break;
+        }
+        UpdateInventoryItems();
         canvasGroup.alpha = 1f;
         yield return new WaitForSeconds(inventoryStartDisappearTime);
         float elapsed = 0f;
