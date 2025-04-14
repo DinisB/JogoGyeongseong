@@ -61,7 +61,7 @@ public class EnemyManager : MonoBehaviour
     private void UpdateWalk()
     {
         float distance = Vector3.Distance(transform.position, _paths[_nextPath]);
-        Debug.Log($"{Vector3.Distance(transform.position, _paths[_nextPath])}");
+        //Debug.Log($"{Vector3.Distance(transform.position, _paths[_nextPath])}");
         if (distance < 5f)
         {
             _nextPath += 1;
