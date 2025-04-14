@@ -6,6 +6,7 @@ public class PlayerManager : MonoBehaviour
 {
     
     // Other objects references
+    [SerializeField] private GameManager gameManager;
     [SerializeField] private Transform canvas;
     [SerializeField] private GameObject bulletPrefab;
     private Transform _shootPos;
@@ -72,6 +73,8 @@ public class PlayerManager : MonoBehaviour
             if (_RegenCoroutine != null) StopCoroutine(_RegenCoroutine);
             _RegenCoroutine = StartCoroutine(RegenStamina());
         }
+        
+        if (Input.GetKeyDown(KeyCode.Tab)) gameManager.PopInventory();
     }
 
     private void ShootGun()
