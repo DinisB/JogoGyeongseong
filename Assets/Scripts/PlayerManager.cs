@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
@@ -26,6 +27,8 @@ public class PlayerManager : MonoBehaviour
     private float _currentStamina;
     private bool _isStaminaRegenerating = false;
     private Coroutine _staminaRegenCoroutine;
+    private List<GameObject> _hidingSpotsInReach = new List<GameObject>();
+    private GameObject _hidingObject = null;
     
     // this property can be public if needed elsewhere.
     private float StaminaPercent => _currentStamina / maxStamina;
@@ -47,11 +50,15 @@ public class PlayerManager : MonoBehaviour
 
     void Update()
     {
-        HandleMovement();
-        HandleShooting();
-        HandleStamina();
+        if (_hidingObject == null) { // These only work when the player is NOT HIDING.
+            HandleMovement();
+            HandleShooting();
+            HandleStamina();
+        }
         
         if (Input.GetKeyDown(KeyCode.Tab)) gameManager.PopInventory();
+
+        if (Input.GetKeyDown(KeyCode.Space)) HandleHiding();
     }
     
     /// <summary>
@@ -194,16 +201,6 @@ public class PlayerManager : MonoBehaviour
     {
         _staminaBar.localScale = new Vector3(StaminaPercent, 1f, 1f);
     }
-
-    /// <summary>
-    /// When player enters any 2D Trigger type Collider
-    /// </summary>
-    /// <param name="other"></param>
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        // to add later: player's health reduction
-        if (other.CompareTag("Bullet")) Destroy(other.gameObject);
-    }
     
     /// <summary>
     /// Timer to start the stamina regeneration, cancel it if player consumes again any.
@@ -214,5 +211,102 @@ public class PlayerManager : MonoBehaviour
         yield return new WaitForSeconds(timeBeforeStaminaRegen);
         _isStaminaRegenerating = true;
     }
+
+    /// <summary>
+    /// Handle hiding logic, if if it's to enter hiding or exit hiding.
+    /// </summary>
+    private void HandleHiding()
+    {
+        if (_hidingObject == null)
+        {
+            TryToHideInObject();
+        }
+        else
+        {
+            TryToExitHidingObject();
+        }
+    }
+
+    /// <summary>
+    /// Called when the player presses SPACE key and is inside a hiding object,
+    /// then will try to come out and enable everything it should.
+    /// </summary>
+    private void TryToExitHidingObject()
+    {
+        if (_hidingObject.TryGetComponent(out HidingObject hidingScript))
+        {
+            transform.position = hidingScript.PlayerExitHideSpot();
+        }
+
+        transform.GetComponent<SpriteRenderer>().enabled = true;
+        _shootPos.parent.gameObject.SetActive(true);
+        _hidingObject = null;
+    }
     
+    /// <summary>
+    /// Called when player presses SPACE key, it will try to find the closest hiding
+    /// that the player reaches, hide whatever it has to hide,
+    /// and if it can't find any, nothing will happen.
+    /// </summary>
+    private void TryToHideInObject()
+    {
+        if (_hidingSpotsInReach.Count == 0) return; // No spots to hide close by.
+        Vector3 playerLocation = transform.position;
+        GameObject closest = _hidingSpotsInReach[0];
+        // If the player is near more than 1 hiding object, this will pick the closest one.
+        if (_hidingSpotsInReach.Count > 1)
+        {
+            float closestDist = Mathf.Infinity;
+            foreach (GameObject hidingObject in _hidingSpotsInReach)
+            {
+                if (closest == hidingObject) continue;
+                float distance = Vector3.Distance(playerLocation, hidingObject.transform.position);
+                if (distance < closestDist)
+                {
+                    closestDist = distance;
+                    closest = hidingObject;
+                }
+            }
+        }
+        TryStartStaminaRegen();
+        if (closest.CompareTag("HidingObject") && closest.TryGetComponent(out HidingObject hidingScript))
+        {
+            hidingScript.PlayerHideHere(playerLocation);
+            _hidingObject = closest;
+            transform.position = closest.transform.position;
+            _rb.linearVelocity = Vector2.zero;
+            _shootPos.parent.gameObject.SetActive(false);
+            transform.GetComponent<SpriteRenderer>().enabled = false;
+        }
+    }
+    
+    /// <summary>
+    /// When player enters any 2D Trigger type collider
+    /// </summary>
+    /// <param name="other"></param>
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        // to add later: player's health reduction
+        if (other.CompareTag("Bullet")) Destroy(other.gameObject);
+
+        if (other.CompareTag("HidingObject") && other.TryGetComponent(out HidingObject hidingObject))
+        {
+            hidingObject.PlayerInBounds();
+            _hidingSpotsInReach.Add(other.gameObject);
+        }
+        
+    }
+
+    /// <summary>
+    /// When player exists any 2D Trigger type collider.
+    /// </summary>
+    /// <param name="other"></param>
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("HidingObject") && other.TryGetComponent(out HidingObject hidingObject))
+        {
+            hidingObject.PlayerOutOfBounds();
+            _hidingSpotsInReach.Remove(other.gameObject);
+        }
+    }
 }
