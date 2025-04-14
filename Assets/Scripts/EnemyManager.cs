@@ -65,6 +65,7 @@ public class EnemyManager : MonoBehaviour
         if (distance < 5f)
         {
             _nextPath += 1;
+            if (_nextPath >= _paths.Length) _nextPath = 0;
             _direction = (_paths[_nextPath] - transform.position).normalized;
         }
     }

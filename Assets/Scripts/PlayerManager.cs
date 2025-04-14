@@ -54,6 +54,11 @@ public class PlayerManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab)) gameManager.PopInventory();
     }
     
+    /// <summary>
+    /// Find exactly which direction the player is facing, used mostly for shooting accurately in the right direction.
+    /// </summary>
+    /// <param name="horizontalInput">Input.GetAxisRaw("Horizontal")</param>
+    /// <param name="verticalInput">Input.GetAxisRaw("Vertical")</param>
     private void UpdateLookingDirection(float horizontalInput, float verticalInput)
     {
         // Determine the primary direction of movement
@@ -77,6 +82,9 @@ public class PlayerManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) ShootGun();
     }
     
+    /// <summary>
+    /// Handle any movement the player does, from normal WASD and running/sprinting.
+    /// </summary>
     private void HandleMovement()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -104,25 +112,22 @@ public class PlayerManager : MonoBehaviour
         _rb.linearVelocity = movement;
         
         // Handle running stamina consumption
-        if (isRunning)
-        {
-            ConsumeStamina(Time.deltaTime);
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            TryStartStaminaRegen();
-        }
+        if (isRunning) ConsumeStamina(Time.deltaTime);
+        else if (Input.GetKeyUp(KeyCode.LeftShift)) TryStartStaminaRegen();
     }
     
+    /// <summary>
+    /// Start the coroutine for the stamina regeneration and cancel any previous one in case of having.
+    /// </summary>
     private void TryStartStaminaRegen()
     {
-        if (_staminaRegenCoroutine != null)
-        {
-            StopCoroutine(_staminaRegenCoroutine);
-        }
+        if (_staminaRegenCoroutine != null) StopCoroutine(_staminaRegenCoroutine);
         _staminaRegenCoroutine = StartCoroutine(RegenerateStamina());
     }
     
+    /// <summary>
+    /// Handles the stamina regeneration.
+    /// </summary>
     private void HandleStamina()
     {
         if (_isStaminaRegenerating && _currentStamina < maxStamina)
@@ -133,6 +138,10 @@ public class PlayerManager : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Consume stamina upon use.
+    /// </summary>
+    /// <param name="amount">the amount to be consumed. (for this game should be Time.deltatime always since it will reduce while using it)</param>
     private void ConsumeStamina(float amount)
     {
         if (_staminaRegenCoroutine != null)
@@ -146,6 +155,9 @@ public class PlayerManager : MonoBehaviour
         UpdateStaminaBar();
     }
 
+    /// <summary>
+    /// Called when player wants to shoot the weapon, verification if player can shoot should be done before this being called.
+    /// </summary>
     private void ShootGun()
     {
         GameObject spawnedBullet = Instantiate(bulletPrefab, _shootPos.position, Quaternion.identity);
@@ -162,6 +174,10 @@ public class PlayerManager : MonoBehaviour
         _shootingParticles.Play();
     }
 
+    /// <summary>
+    /// This will return the angle the particle system for shooting should be aimed at.
+    /// </summary>
+    /// <returns>float value to use on particleSystem.main.startRotation</returns>
     private float GetParticleSystemRotation()
     {
         float angle = 0f;
@@ -171,17 +187,28 @@ public class PlayerManager : MonoBehaviour
         return angle * Mathf.Deg2Rad;
     }
     
+    /// <summary>
+    /// Update the Stamina bar size shown on Canvas(screen)
+    /// </summary>
     private void UpdateStaminaBar()
     {
         _staminaBar.localScale = new Vector3(StaminaPercent, 1f, 1f);
     }
 
+    /// <summary>
+    /// When player enters any 2D Trigger type Collider
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter2D(Collider2D other)
     {
         // to add later: player's health reduction
         if (other.CompareTag("Bullet")) Destroy(other.gameObject);
     }
     
+    /// <summary>
+    /// Timer to start the stamina regeneration, cancel it if player consumes again any.
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator RegenerateStamina()
     {
         yield return new WaitForSeconds(timeBeforeStaminaRegen);
