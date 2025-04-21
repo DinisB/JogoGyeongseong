@@ -5,34 +5,39 @@ public class PlayerManager2 : MonoBehaviour
 {
 
     private Camera _cam;
-    private int _camPos = 0;
     
     void Start()
     {
         _cam = Camera.main;
-        _cam.transform.position = GetNextCameraPos(-1);
+        FixCameraPos(null);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("CameraPos"))
-        {
-            int colliderID = int.Parse(other.gameObject.name.Substring("Collider".Length));
-            _cam.transform.position = GetNextCameraPos(colliderID);
-        }
+        if (other.CompareTag("CameraPos")) FixCameraPos(other);
     }
 
-    private Vector3 GetNextCameraPos(int colliderID)
+    private Collider2D _lastRoom;
+    private void FixCameraPos(Collider2D other)
     {
-        Vector3[] camPos = new Vector3[] { new Vector3(0f, 0f, -10f), new Vector3(288f, 288f, -10f) };
-        if (colliderID == 0 && _camPos == 0)
+        if (other == null)
         {
-            // going up
-            _camPos = 1;
-            return camPos[1];
+            transform.position = new Vector3(0f, 0f, 0f);
+            _cam.transform.position = new Vector3(0f, 0f, -10f);
+            return;
         }
-        // starting point
-        _camPos = 0;
-        return camPos[0];
+        if (_lastRoom != null)
+        {
+            Vector3 lastPos = _lastRoom.transform.position;
+            Vector3 nowPos = other.transform.position;
+            float x = nowPos.x - lastPos.x;
+            float y = nowPos.y - lastPos.y;
+            if (y > 0) transform.position += new Vector3(0f, 32f, 0f);
+            if (y < 0) transform.position -= new Vector3(0f, 32f, 0f);
+            if (x > 0) transform.position += new Vector3(22f, 0, 0f);
+            if (x < 0) transform.position -= new Vector3(22f, 0, 0f);
+        }
+        _cam.transform.position = other.gameObject.transform.position - new Vector3(0f, 0f, 10f);
+        _lastRoom = other;
     }
 }
