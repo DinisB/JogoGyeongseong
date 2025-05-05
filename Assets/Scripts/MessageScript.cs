@@ -17,25 +17,30 @@ public class MessageScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        string textFile = "Resources/messageText.json"; // vai buscar json das mensagens
-        string jsonString = File.ReadAllText(textFile);
+        TextAsset textFile = Resources.Load<TextAsset>("messageText"); // vai buscar json das mensagens
+        string jsonString = textFile.text;
         messages = JArray.Parse(jsonString); // dá parse
+        ShowText(start, timer);
     }
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1")) { //vai para proxima mensgaem
-            if (start < end) {
+        if (Input.GetButtonDown("Fire1"))
+        { //vai para proxima mensgaem
+            if (start < end)
+            {
                 start++;
                 ShowText(start, timer);
             }
-            else {
+            else
+            {
                 gameObject.SetActive(false);
             }
         }
     }
 
-    public void StartMessageText(int start_t, int end_t) {
+    public void StartMessageText(int start_t, int end_t)
+    {
         gameObject.SetActive(true);
         start = start_t;
         end = end_t;
@@ -53,7 +58,7 @@ public class MessageScript : MonoBehaviour
         string name = messages[num]["name"]?.ToString(); // mete o name como nome
         string message = messages[num]["text"]?.ToString(); // guarda a message
         string icon = messages[num]["icon"]?.ToString();
-        imageBox.sprite = Resources.Load<Sprite>("Icons/"+icon); // dá load dos icones para a ui
+        imageBox.sprite = Resources.Load<Sprite>("Icons/" + icon); // dá load dos icones para a ui
         StringBuilder textBuilder = new StringBuilder();
         textBuilder.Append(name);
         foreach (char c in message) // dá load de cada message e mostra os chars no texto
