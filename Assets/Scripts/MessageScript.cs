@@ -20,7 +20,6 @@ public class MessageScript : MonoBehaviour
         string textFile = "Assets/messageText.json"; // vai buscar json das mensagens
         string jsonString = File.ReadAllText(textFile);
         messages = JArray.Parse(jsonString); // dá parse
-        ShowText(start, timer);
     }
 
     void Update()
@@ -30,7 +29,17 @@ public class MessageScript : MonoBehaviour
                 start++;
                 ShowText(start, timer);
             }
+            else {
+                gameObject.SetActive(false);
+            }
         }
+    }
+
+    public void StartMessageText(int start_t, int end_t) {
+        gameObject.SetActive(true);
+        start = start_t;
+        end = end_t;
+        ShowText(start, timer);
     }
 
     public void ShowText(int num, float timer)
