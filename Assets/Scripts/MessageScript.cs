@@ -17,7 +17,7 @@ public class MessageScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        string textFile = "Assets/messageText.json"; // vai buscar json das mensagens
+        string textFile = "Resources/messageText.json"; // vai buscar json das mensagens
         string jsonString = File.ReadAllText(textFile);
         messages = JArray.Parse(jsonString); // dá parse
     }
