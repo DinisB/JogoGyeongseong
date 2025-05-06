@@ -18,6 +18,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float maxStamina = 10f;
     [SerializeField] private float timeBeforeStaminaRegen = 2f;
     [SerializeField] private float staminaRegenRate = 2f;
+    private Animator anim;
 
     private Transform _shootPos;
     private ParticleSystem _shootingParticles;
@@ -40,6 +41,7 @@ public class PlayerManager : MonoBehaviour
     
     void Start()
     {
+        anim = GetComponent<Animator>();
         _staminaBar = canvas.Find("Stamina").Find("Bar").GetComponent<RectTransform>();
         _shootPos = transform.Find("Gun").Find("ShootPos");
         _shootingParticles = _shootPos.Find("ShootingParticles").GetComponent<ParticleSystem>();
@@ -108,6 +110,12 @@ public class PlayerManager : MonoBehaviour
         if (horizontalInput != 0 || verticalInput != 0)
         {
             UpdateLookingDirection(horizontalInput, verticalInput);
+            anim.SetFloat("X", horizontalInput);
+            anim.SetFloat("Y", verticalInput);
+            anim.SetBool("Walking", true);
+        }
+        else {
+            anim.SetBool("Walking", false);
         }
         
         // Calculate movement speed with sprint if possible
