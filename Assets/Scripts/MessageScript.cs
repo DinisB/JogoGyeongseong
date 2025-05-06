@@ -5,6 +5,7 @@ using System.IO;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Text;
+using UnityEngine.SceneManagement;
 
 public class MessageScript : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class MessageScript : MonoBehaviour
     [SerializeField] private int end;
     [SerializeField] private Image imageBox;
     private bool messageRunning = false;
+    [SerializeField] private bool loadNextScene = false;
+    [SerializeField] private string nextSceneToLoad;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -37,6 +40,7 @@ public class MessageScript : MonoBehaviour
                 }
                 else
                 {
+                    if (loadNextScene) SceneManager.LoadSceneAsync(nextSceneToLoad);
                     gameObject.SetActive(false);
                 }
             }
