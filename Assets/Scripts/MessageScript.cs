@@ -14,6 +14,7 @@ public class MessageScript : MonoBehaviour
     [SerializeField] private int start;
     [SerializeField] private int end;
     [SerializeField] private Image imageBox;
+    private bool messageRunning = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -27,14 +28,29 @@ public class MessageScript : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         { //vai para proxima mensgaem
-            if (start < end)
+            if (!messageRunning)
             {
-                start++;
-                ShowText(start, timer);
+                if (start < end)
+                {
+                    start++;
+                    ShowText(start, timer);
+                }
+                else
+                {
+                    gameObject.SetActive(false);
+                }
             }
+
             else
             {
-                gameObject.SetActive(false);
+                StopAllCoroutines();
+                StringBuilder textBuilder = new StringBuilder();
+                string name = messages[start]["name"]?.ToString(); // mete o name como nome
+                string message = messages[start]["text"]?.ToString(); // guarda a message
+                textBuilder.Append(name);
+                textBuilder.Append(message);
+                uiText.text = textBuilder.ToString();
+                messageRunning = false;
             }
         }
     }
@@ -55,6 +71,7 @@ public class MessageScript : MonoBehaviour
 
     private System.Collections.IEnumerator TypeText(int num, float timer)
     {
+        messageRunning = true;
         string name = messages[num]["name"]?.ToString(); // mete o name como nome
         string message = messages[num]["text"]?.ToString(); // guarda a message
         string icon = messages[num]["icon"]?.ToString();
@@ -67,5 +84,6 @@ public class MessageScript : MonoBehaviour
             uiText.text = textBuilder.ToString();
             yield return new WaitForSeconds(timer);
         }
+        messageRunning = false;
     }
 }
