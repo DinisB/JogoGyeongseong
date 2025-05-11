@@ -12,8 +12,6 @@ public class SceneCutscene : MonoBehaviour
     [SerializeField] private Image canvasImageObject;
     [SerializeField] private bool loadNextScene = false;
     [SerializeField] private string nextSceneToLoad;
-    [SerializeField] private bool hasMessage;
-    [SerializeField] private GameObject messageBox;
 
     private void Start()
     {
@@ -30,10 +28,7 @@ public class SceneCutscene : MonoBehaviour
             if (count >= sprites.Length) break;
             yield return new WaitForSeconds(timeEachFrame);
         }
-        yield return null;
-        if (!hasMessage) yield break;
-        messageBox.SetActive(true);
-        if (!SceneManager.GetSceneByName(nextSceneToLoad).IsValid() || !loadNextScene) yield break;
+        if (!loadNextScene) yield break;
         SceneManager.LoadSceneAsync(nextSceneToLoad);
     }
     
