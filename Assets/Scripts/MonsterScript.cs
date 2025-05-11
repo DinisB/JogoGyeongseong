@@ -15,6 +15,7 @@ public class MonsterScript : MonoBehaviour
     private Vector3[] _paths;
     private int _nextPath = -1;
     private Vector3 _direction = Vector3.zero;
+    private int life = 50;
 
     void Start()
     {
@@ -65,6 +66,7 @@ public class MonsterScript : MonoBehaviour
     {
         if (!other.gameObject.CompareTag("Bullet")) return;
         Destroy(other.gameObject);
-        Destroy(gameObject);
+        life = - 10;
+        if (life <= 0) Destroy(gameObject);
     }
 }

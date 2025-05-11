@@ -15,6 +15,7 @@ public class EnemyManager : MonoBehaviour
 
     private Rigidbody2D _rb;
     private GameObject lantern;
+    private int life = 20;
 
     // WILL BE USED IN FUTURE
     // 0 = Nothing found, walk
@@ -109,6 +110,7 @@ public class EnemyManager : MonoBehaviour
     {
         if (!other.gameObject.CompareTag("Bullet")) return;
         Destroy(other.gameObject);
-        Destroy(gameObject);
+        life = - 10;
+        if (life <= 0) Destroy(gameObject);
     }
 }
