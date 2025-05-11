@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
@@ -11,9 +12,10 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private Transform pathObject;
 
     [SerializeField] private float moveSpeed = 30f;
-    
+
     private Rigidbody2D _rb;
-    
+    private GameObject lantern;
+
     // WILL BE USED IN FUTURE
     // 0 = Nothing found, walk
     // 1 = In combat with player, dont walk
@@ -22,10 +24,13 @@ public class EnemyManager : MonoBehaviour
     private Vector3[] _paths;
     private int _nextPath = -1;
     private Vector3 _direction = Vector3.zero;
-    
+    private Animator anim;
+
     void Start()
     {
+        anim = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody2D>();
+        lantern = gameObject.transform.Find("Lantern")?.gameObject;
 
         // //////////
         // PATH SETUP
@@ -44,7 +49,7 @@ public class EnemyManager : MonoBehaviour
         transform.position = _paths[0];
         _nextPath = 1;
         _direction = (_paths[_nextPath] - transform.position).normalized;
-        
+
         InvokeRepeating(nameof(InvokeRayCasts), 1f, 1f);
     }
 
@@ -54,7 +59,11 @@ public class EnemyManager : MonoBehaviour
         if (_nextPath < 0) return; // not move while it's being setup.
         _elapsedUpdateWalk += Time.deltaTime;
         _rb.linearVelocity = _direction * moveSpeed;
-        
+        anim.SetFloat("X", _direction.x);
+        anim.SetFloat("Y", _direction.y);
+        float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
+        lantern.transform.rotation = Quaternion.Euler(0, 0, angle);
+
         if (_elapsedUpdateWalk >= 0.1f) UpdateWalk();
     }
 
@@ -69,7 +78,7 @@ public class EnemyManager : MonoBehaviour
             _direction = (_paths[_nextPath] - transform.position).normalized;
         }
     }
-    
+
     private void InvokeRayCasts()
     {
         RaycastHit2D hit = Physics2D.Raycast(shootPos.position, Vector2.right, Mathf.Infinity, LayerMask.GetMask("Default"));

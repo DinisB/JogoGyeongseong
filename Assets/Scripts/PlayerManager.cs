@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -30,6 +31,7 @@ public class PlayerManager : MonoBehaviour
     private Coroutine _staminaRegenCoroutine;
     private List<GameObject> _hidingSpotsInReach = new List<GameObject>();
     private GameObject _hidingObject = null;
+    [SerializeField] private string scenename;
     
     // this property can be public if needed elsewhere.
     private float StaminaPercent => _currentStamina / maxStamina;
@@ -302,6 +304,8 @@ public class PlayerManager : MonoBehaviour
             hidingObject.PlayerInBounds();
             _hidingSpotsInReach.Add(other.gameObject);
         }
+
+        if (other.CompareTag("Enemies")) SceneManager.LoadSceneAsync(scenename);
         
     }
 
