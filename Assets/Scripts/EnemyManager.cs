@@ -108,9 +108,10 @@ public class EnemyManager : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.gameObject.CompareTag("Bullet")) return;
-        Destroy(other.gameObject);
-        life = - 10;
-        if (life <= 0) Destroy(gameObject);
+        if (!other.gameObject.CompareTag("Bullet"))
+        {
+            life -= 10;
+            if (life <= 0) Destroy(gameObject);
+        }
     }
 }

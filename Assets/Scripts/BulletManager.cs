@@ -17,4 +17,11 @@ public class BulletManager : MonoBehaviour
     {
         _rb.linearVelocity = _direction * _bulletSpeed;
     }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemies")) {
+            Destroy(gameObject);
+        }
+    }
 }
