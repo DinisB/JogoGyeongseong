@@ -68,6 +68,7 @@ public class MonsterScript : MonoBehaviour
         {
             life -= 10;
             if (life <= 0) Destroy(gameObject);
+            Destroy(other.gameObject);
         }
     }
 }
