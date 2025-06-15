@@ -210,7 +210,10 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      soldadocv-export_0: 7960416745181665015
+      soldadocv-export_1: -3251323686566489260
+      soldadocv-export_2: 7437912154262233327
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
