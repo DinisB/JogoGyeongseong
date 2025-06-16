@@ -500,7 +500,7 @@ MonoBehaviour:
   timeEachFrame: 0.2
   canvasImageObject: {fileID: 1160205054}
   loadNextScene: 1
-  nextSceneToLoad: Cutscene2
+  nextSceneToLoad: Level1
 --- !u!1 &2129133005
 GameObject:
   m_ObjectHideFlags: 0
