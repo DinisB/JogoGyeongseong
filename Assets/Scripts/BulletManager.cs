@@ -11,6 +11,7 @@ public class BulletManager : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        Destroy(gameObject, 3f);
     }
 
     private void FixedUpdate()
