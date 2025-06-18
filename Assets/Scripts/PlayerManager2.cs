@@ -14,7 +14,11 @@ public class PlayerManager2 : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("CameraPos")) FixCameraPos(other);
+        if (other.CompareTag("CameraPos"))
+        {
+            FixCameraPos(other);
+            if (other.TryGetComponent(out DialogueManager dialogueManager)) dialogueManager.ActivateDialogue();
+        }
     }
 
     private Collider2D _lastRoom;
