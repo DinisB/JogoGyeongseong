@@ -53,6 +53,7 @@ public class SceneCutsceneWDialogue : MonoBehaviour
     
     private IEnumerator Cutscene()
     {
+        canvasImageObject.sprite = framePoints[0].sprite;
         // fade In
         if (fadeIn > 0f)
         {

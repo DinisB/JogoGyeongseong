@@ -137,6 +137,94 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: dialogue_box_0
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 128
+        width: 77
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 7, y: 7, z: 7, w: 7}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d1986afe9d00ab47afe223a005f3d1c
+      internalID: 314725746338704250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dialogue_box_2
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 23
+        width: 493
+        height: 98
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 17, y: 17, z: 13, w: 13}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a881f9564930d7741b623f8e46f15465
+      internalID: -633172857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dialogue_box_3
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 210
+        width: 53
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 2, y: 2, z: 2, w: 2}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d5733d245c2beb448c9754b99e63bb9
+      internalID: -1001312558
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dialogue_box_4
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 267
+        width: 67
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 2, y: 2, z: 2, w: 2}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bad9f785f249f4145a859438d77c63ea
+      internalID: -1916342273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -153,6 +241,9 @@ TextureImporter:
     nameFileIdTable:
       dialogue_box_0: 314725746338704250
       dialogue_box_1: -2548255888982529342
+      dialogue_box_2: -633172857
+      dialogue_box_3: -1001312558
+      dialogue_box_4: -1916342273
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
