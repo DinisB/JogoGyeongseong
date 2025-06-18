@@ -11898,6 +11898,7 @@ GameObject:
   - component: {fileID: 933886728}
   - component: {fileID: 933886727}
   - component: {fileID: 933886729}
+  - component: {fileID: 933886730}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -12006,7 +12007,35 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 933886727}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2073175971}
+        m_TargetAssemblyTypeName: DialogueBox, Assembly-CSharp
+        m_MethodName: ClickedNextText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &933886730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 933886725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36ab489f161b4c9989e0294ceb7a4c53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  increasedSize: 0.2
+  image: {fileID: 933886727}
+  baseColor: {r: 0.5294118, g: 0.41568628, b: 0.12156863, a: 0.5764706}
+  hoverColor: {r: 0.9811321, g: 0.78239584, b: 0.2684228, a: 0.5764706}
 --- !u!1 &941295695
 GameObject:
   m_ObjectHideFlags: 0
@@ -12275,6 +12304,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1034863976}
   - component: {fileID: 1034863977}
+  - component: {fileID: 1034863978}
   m_Layer: 0
   m_Name: Collider1 (3)
   m_TagString: CameraPos
@@ -12343,6 +12373,26 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 512, y: 288}
   m_EdgeRadius: 0
+--- !u!114 &1034863978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034863975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb8969eaae7f09344a0cff4e6ef2d66d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueBox: {fileID: 2073175971}
+  talks:
+  - talkerSprite: {fileID: 21300000, guid: 4147c1a5f58c47c4792972c4860d06ab, type: 3}
+    talkerName: Children
+    text: Mister... are you here to save us?
+  - talkerSprite: {fileID: 21300000, guid: ea6f3386ec53ff64c8ba62db98a76217, type: 3}
+    talkerName: Jang
+    text: What? Oh... oh, hang on a minute.
 --- !u!1 &1058110253
 GameObject:
   m_ObjectHideFlags: 0
@@ -20213,6 +20263,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1630353722}
   - component: {fileID: 1630353723}
+  - component: {fileID: 1630353724}
   m_Layer: 0
   m_Name: Collider1
   m_TagString: CameraPos
@@ -20281,6 +20332,24 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 512, y: 288}
   m_EdgeRadius: 0
+--- !u!114 &1630353724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1630353721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb8969eaae7f09344a0cff4e6ef2d66d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueBox: {fileID: 2073175971}
+  talks:
+  - talkerSprite: {fileID: 21300000, guid: 4147c1a5f58c47c4792972c4860d06ab, type: 3}
+    talkerName: Sachimoto
+    text: Hey, to your right... this is my room, but I don't think you can go in
+      there right now tho.
 --- !u!1 &1636425978
 GameObject:
   m_ObjectHideFlags: 0
@@ -26257,6 +26326,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2066164472}
   - component: {fileID: 2066164473}
+  - component: {fileID: 2066164474}
   m_Layer: 0
   m_Name: Collider0
   m_TagString: CameraPos
@@ -26325,6 +26395,23 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 512, y: 288}
   m_EdgeRadius: 0
+--- !u!114 &2066164474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066164471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb8969eaae7f09344a0cff4e6ef2d66d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueBox: {fileID: 2073175971}
+  talks:
+  - talkerSprite: {fileID: 21300000, guid: ea6f3386ec53ff64c8ba62db98a76217, type: 3}
+    talkerName: Jang
+    text: I have to find Cha and find what's going on here.
 --- !u!1 &2073175966
 GameObject:
   m_ObjectHideFlags: 0
@@ -26338,6 +26425,8 @@ GameObject:
   - component: {fileID: 2073175968}
   - component: {fileID: 2073175970}
   - component: {fileID: 2073175971}
+  - component: {fileID: 2073175972}
+  - component: {fileID: 2073175973}
   m_Layer: 5
   m_Name: DialogueBox
   m_TagString: Untagged
@@ -26437,6 +26526,46 @@ MonoBehaviour:
   textTmp: {fileID: 1166442494}
   buttonNext: {fileID: 933886729}
   buttonNextTmp: {fileID: 2093693555}
+--- !u!223 &2073175972
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2073175966}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &2073175973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2073175966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &2075957017
 GameObject:
   m_ObjectHideFlags: 0
