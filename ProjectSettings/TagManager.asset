@@ -8,6 +8,7 @@ TagManager:
   - HidingObject
   - CameraPos
   - Enemies
+  - Music
   layers:
   - Default
   - TransparentFX
